@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <title>Show User</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #333, #666);
+            background-size: 200% 200%;
+            animation: gradientAnimation 15s ease infinite;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            color: #fff;
+        }
+
+        @keyframes gradientAnimation {
+            0% { background-position: 0 0; }
+            50% { background-position: 100% 100%; }
+            100% { background-position: 0 0; }
+        }
+
+        .container {
+            background: rgba(50, 50, 50, 0.9);
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+            text-align: center;
+            width: 80%;
+            max-width: 600px;
+        }
+
+        h1 {
+            font-size: 28px;
+            color: #f0f0f0;
+            margin-bottom: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            color: #fff;
+        }
+
+        th, td {
+            padding: 12px;
+            border: 1px solid #444;
+            text-align: left;
+        }
+
+        th {
+            background-color: #555;
+            color: #ddd;
+        }
+
+        tr:nth-child(even) {
+            background-color: #444;
+        }
+
+        a {
+            text-decoration: none;
+            color: #007bff;
+            font-weight: bold;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        .message {
+            background-color: #007bff;
+            color: #fff;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+        .logout-button {
+            background-color: #333;
+            border: none;
+            padding: 14px 20px;
+            color: #fff;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+            display: block;
+            width: 100%;
+            text-align: center;
+        }
+
+        .logout-button:hover {
+            background-color: #555;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Show User</h1>
+
+    <div th:if="${resultMessage != null}" class="message" th:text="${resultMessage}">Message Placeholder</div>
+
+    <div th:if="${user != null}">
+        <table>
+            <tr>
+                <th>Username</th>
+                <td th:text="${user.name}">Username</td>
+            </tr>
+            <tr>
+                <th>Role</th>
+                <td th:text="${user.role}">Role</td>
+            </tr>
+            <tr>
+                <th>User ID</th>
+                <td th:text="${user.id}">User ID</td>
+            </tr>
+        </table>
+    </div>
+
+    <div th:if="${user == null}">
+        <div class="message">User not found.</div>
+    </div>
+
+    <button onclick="window.location.href='/login'" class="logout-button">Back to Dashboard</button>
+
+
+</div>
+</body>
+</html>

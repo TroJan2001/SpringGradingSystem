@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Student Dashboard</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #333, #666);
+      background-size: 200% 200%;
+      animation: gradientAnimation 15s ease infinite;
+      margin: 0;
+      padding: 0;
+      color: #fff;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    @keyframes gradientAnimation {
+      0% {
+        background-position: 0 0;
+      }
+      50% {
+        background-position: 100% 100%;
+      }
+      100% {
+        background-position: 0 0;
+      }
+    }
+
+    .container {
+      width: 80%;
+      max-width: 800px;
+      padding: 20px;
+      background-color: rgba(50, 50, 50, 0.9);
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
+    }
+
+    h1 {
+      font-size: 24px;
+      margin-bottom: 20px;
+    }
+
+    form {
+      margin-bottom: 20px;
+    }
+
+    button {
+      background-color: #007BFF;
+      color: #fff;
+      border: none;
+      padding: 10px 15px;
+      font-size: 16px;
+      cursor: pointer;
+      border-radius: 5px;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+
+    label {
+      font-size: 16px;
+      margin-right: 10px;
+    }
+
+    input[type="text"] {
+      padding: 10px;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      width: calc(100% - 20px);
+      margin-bottom: 10px;
+    }
+
+    .form-group {
+      margin-bottom: 15px;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <h1>Welcome, <span th:text="${username}"></span></h1>
+  <p class="role">Role: <span th:text="${role}"></span></p>
+
+  <form th:action="@{/student/grades}" method="post" class="form-group">
+    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+    <button type="submit">View My Grades</button>
+  </form>
+
+  <form th:action="@{/common/teacherCourses}" method="post" class="form-group">
+    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+    <label for="teacherName">Enter Teacher Name:</label>
+    <input type="text" id="teacherName" name="teacherName" placeholder="Enter Teacher Name" required>
+    <button type="submit">View Teacher Courses</button>
+  </form>
+
+  <!-- Logout form -->
+  <form th:action="@{/logout}" method="post" class="form-group">
+    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+    <button type="submit">Logout</button>
+  </form>
+</div>
+</body>
+</html>

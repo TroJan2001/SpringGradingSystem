@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Management</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #1a1a1a, #4d4d4d);
+            background-size: 200% 200%;
+            animation: gradientAnimation 15s ease infinite;
+            margin: 0;
+            padding: 0;
+            color: #fff;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        @keyframes gradientAnimation {
+            0% { background-position: 0 0; }
+            50% { background-position: 100% 100%; }
+            100% { background-position: 0 0; }
+        }
+
+        .container {
+            width: 80%;
+            max-width: 800px;
+            padding: 30px;
+            background-color: rgba(40, 40, 40, 0.8);
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.6);
+        }
+
+        h1 {
+            font-size: 28px;
+            margin-bottom: 20px;
+        }
+
+        .tab {
+            display: flex;
+            flex-wrap: wrap;
+            border: 1px solid #555;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+
+        .tab button {
+            background-color: #333;
+            border: none;
+            outline: none;
+            padding: 14px 20px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            font-size: 16px;
+            color: #fff;
+            border-radius: 5px 5px 0 0;
+            flex: 1 1 20%;
+            box-sizing: border-box;
+        }
+
+        .tab button:hover {
+            background-color: #555;
+        }
+
+        .tabcontent {
+            display: none;
+            padding: 20px;
+            background-color: rgba(50, 50, 50, 0.8);
+            border-top: 1px solid #555;
+        }
+
+        .tabcontent input[type="text"],
+        .tabcontent input[type="number"] {
+            padding: 12px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            width: calc(100% - 24px);
+            margin-bottom: 12px;
+        }
+
+        .tabcontent button {
+            background-color: #007BFF;
+            color: #fff;
+            border: none;
+            padding: 12px 20px;
+            font-size: 18px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        .tabcontent button:hover {
+            background-color: #0056b3;
+        }
+
+        .message {
+            background-color: #007bff;
+            color: #fff;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+
+        .logout-button {
+            background-color: #333;
+            border: none;
+            padding: 14px 20px;
+            color: #fff;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+            display: block;
+            width: 100%;
+            text-align: center;
+        }
+
+        .logout-button:hover {
+            background-color: #555;
+        }
+
+        .tab button.super-admin-button {
+            background-color: #ff3333;
+            color: white;
+        }
+
+        .tab button.super-admin-button:hover {
+            background-color: #cc0000;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>User Management</h1>
+
+    <h1><span th:text="${username}"></span></h1>
+    <p class="role">Role: <span th:text="${role}"></span></p>
+
+    <!-- Result message -->
+    <div th:if="${resultMessage != null}" class="message" th:text="${resultMessage}"></div>
+
+    <div class="tab">
+        <button class="tablinks" data-tab="registerUserTab">Register User</button>
+        <button class="tablinks" data-tab="deleteUserTab">Delete User</button>
+
+        <!-- Show buttons only for super_admin -->
+        <div th:if="${role == 'super_admin'}">
+            <button class="tablinks super-admin-button" data-tab="registerAdminTab">Register Admin</button>
+            <button class="tablinks super-admin-button" data-tab="showAllUsersTab">Show All Users</button>
+            <button class="tablinks super-admin-button" data-tab="showUserByIdTab">Show User by ID</button>
+        </div>
+    </div>
+
+    <!-- Register User Tab -->
+    <div id="registerUserTab" class="tabcontent">
+        <h2>Register User</h2>
+        <form th:action="@{/admin/registerUser}" method="post">
+            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+            <label for="registerUsername">Username:</label>
+            <input type="text" id="registerUsername" name="username" placeholder="Enter Username" required>
+            <label for="registerPassword">Password:</label>
+            <input type="text" id="registerPassword" name="password" placeholder="Enter Password" required>
+            <label for="registerRole">Role:</label>
+            <input type="text" id="registerRole" name="role" placeholder="Enter Role" required>
+            <button type="submit" name="command" value="REGISTER_USER">Register</button>
+        </form>
+    </div>
+
+    <!-- Delete User Tab -->
+    <div id="deleteUserTab" class="tabcontent">
+        <h2>Delete User</h2>
+        <form th:action="@{/admin/deleteUser}" method="post">
+            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+            <label for="deleteUserID">UserID:</label>
+            <input type="text" id="deleteUserID" name="userID" placeholder="Enter User ID" required>
+            <button type="submit" name="command" value="DELETE_USER">Delete</button>
+        </form>
+    </div>
+
+    <!-- Register Admin Tab (Visible only for super_admin) -->
+    <div id="registerAdminTab" class="tabcontent">
+        <h2>Register Admin</h2>
+        <form th:action="@{/admin/registerAdmin}" method="post">
+            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+            <label for="registerAdminUsername">Admin Username:</label>
+            <input type="text" id="registerAdminUsername" name="adminUsername" placeholder="Enter Admin Username" required>
+            <label for="registerAdminPassword">Admin Password:</label>
+            <input type="text" id="registerAdminPassword" name="adminPassword" placeholder="Enter Admin Password" required>
+            <button type="submit" name="command" value="REGISTER_ADMIN">Register Admin</button>
+        </form>
+    </div>
+
+    <!-- Show All Users Tab (Visible only for super_admin) -->
+    <div id="showAllUsersTab" class="tabcontent">
+        <h2>Show All Users</h2>
+        <form th:action="@{/admin/users}" method="post">
+            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+            <button type="submit" name="command" value="SHOW_ALL_USERS">Show All Users</button>
+        </form>
+    </div>
+
+    <!-- Show User by ID Tab (Visible only for super_admin) -->
+    <div id="showUserByIdTab" class="tabcontent">
+        <h2>Show User by ID</h2>
+        <form th:action="@{/admin/user}" method="post">
+            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+            <label for="userID">User ID:</label>
+            <input type="number" id="userID" name="userID" placeholder="Enter User ID" required>
+            <button type="submit" name="command" value="SHOW_USER_BY_ID">Show User</button>
+        </form>
+    </div>
+
+    <!-- Back to Dashboard -->
+    <button onclick="window.location.href='/login'" class="logout-button">Back to Dashboard</button>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const tabs = document.querySelectorAll('.tablinks');
+        const tabContents = document.querySelectorAll('.tabcontent');
+
+        // Activate first tab by default
+        tabs[0].click();
+
+        tabs.forEach(tab => {
+            tab.addEventListener('click', (event) => {
+                const tabName = event.currentTarget.getAttribute('data-tab');
+
+                // Hide all tab content and remove 'active' class from all tabs
+                tabContents.forEach(content => {
+                    content.style.display = 'none';
+                });
+
+                tabs.forEach(btn => {
+                    btn.classList.remove('active');
+                });
+
+                // Show the clicked tab's content and set active class
+                document.getElementById(tabName).style.display = 'block';
+                event.currentTarget.classList.add('active');
+            });
+        });
+    });
+</script>
+</body>
+</html>
