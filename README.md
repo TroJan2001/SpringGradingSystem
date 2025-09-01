@@ -11,4 +11,4 @@ Earlier versions included a CLI (JDBC + sockets) and JSP/Servlets; this version 
 - MySQL in production, H2 for development
 
 ## Tech Stack
-Spring Boot • Spring MVC • Spring Security • JDBC/JPA • MySQL/H2 • Maven • Docker Compose
+Spring Boot • Spring MVC • Spring Security • JDBC/JPA • MySQL • Maven
