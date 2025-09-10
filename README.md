@@ -7,8 +7,8 @@ Earlier versions included a CLI (JDBC + sockets) and JSP/Servlets; this version 
 - Role-based access (Admin, Instructor, Student)
 - Manage courses, enrollments, and grades
 - Student transcripts and course analytics
-- Secure authentication (Spring Security, BCrypt)
-- MySQL in production, H2 for development
+- Secure authentication (Spring Security)
+- MySQL
 
 ## Tech Stack
 Spring Boot • Spring MVC • Spring Security • JDBC/JPA • MySQL • Maven
